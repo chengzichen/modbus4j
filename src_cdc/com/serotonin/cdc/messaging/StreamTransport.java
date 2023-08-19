@@ -45,8 +45,10 @@ public class StreamTransport implements Transport, Runnable {
     }
 
     public void removeConsumer() {
-        listener.stop();
-        listener = null;
+        if (listener!=null){
+            listener.stop();
+            listener = null;
+        }
     }
 
     public void write(byte[] data) throws IOException {

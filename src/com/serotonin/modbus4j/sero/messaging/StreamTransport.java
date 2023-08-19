@@ -22,7 +22,7 @@ public class StreamTransport implements Transport, Runnable {
     /**
      * <p>Constructor for StreamTransport.</p>
      *
-     * @param in a {@link java.io.InputStream} object.
+     * @param in  a {@link java.io.InputStream} object.
      * @param out a {@link java.io.OutputStream} object.
      */
     public StreamTransport(InputStream in, OutputStream out) {
@@ -46,24 +46,32 @@ public class StreamTransport implements Transport, Runnable {
      * @param threadName a {@link java.lang.String} object.
      */
     public void start(String threadName) {
-        listener.start(threadName);
+        if (listener != null) {
+            listener.start(threadName);
+        }
     }
 
     /**
      * <p>stop.</p>
      */
     public void stop() {
-        listener.stop();
+        if (listener != null) {
+            listener.stop();
+        }
     }
 
     /**
      * <p>run.</p>
      */
     public void run() {
-        listener.run();
+        if (listener != null) {
+            listener.run();
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void setConsumer(DataConsumer consumer) {
         listener = new InputStreamListener(in, consumer);
     }
@@ -72,8 +80,10 @@ public class StreamTransport implements Transport, Runnable {
      * <p>removeConsumer.</p>
      */
     public void removeConsumer() {
-        listener.stop();
-        listener = null;
+        if (listener != null) {
+            listener.stop();
+            listener = null;
+        }
     }
 
     /**
@@ -87,7 +97,9 @@ public class StreamTransport implements Transport, Runnable {
         out.flush();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void write(byte[] data, int len) throws IOException {
         out.write(data, 0, len);
         out.flush();
